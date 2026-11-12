@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#14243b">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Tickets TI">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>Soporte TI | Dashboard</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/app.js" defer></script>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- MENÚ LATERAL -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">IT</div>
+            <div>
+                <h2>Soporte TI</h2>
+                <span>Centro de operaciones</span>
+            </div>
+        </div>
+
+        <div class="menu-label">PRINCIPAL</div>
+
+        <nav class="navigation">
+            <a href="#" class="nav-item active">
+                <span>▦</span> Dashboard
+            </a>
+            <a href="#tickets" class="nav-item">
+                <span>▤</span> Tickets
+            </a>
+            <a href="#actividad" class="nav-item">
+                <span>◷</span> Actividad
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="technician">
+                <div class="avatar">TI</div>
+                <div>
+                    <strong>Técnico TI</strong>
+                    <small>Soporte técnico</small>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+
+        <div id="urgentBanner" class="urgent-banner hidden" role="alert"></div>
+
+        <header class="topbar">
+            <div>
+                <h1>Dashboard</h1>
+                <p>Centro de gestión de incidencias</p>
+            </div>
+
+            <div class="topbar-actions">
+                <div id="connectionStatus" class="connection online">
+                    <span class="status-dot"></span>
+                    <span id="connectionText">Conectado</span>
+                </div>
+
+                <button id="newTicketBtn" class="refresh-btn primary-btn">
+                    + Nuevo ticket
+                </button>
+
+                <button id="refreshBtn" class="refresh-btn">
+                    ↻ Actualizar
+                </button>
+            </div>
+        </header>
+
+        <section class="welcome">
+            <div>
+                <h2>Panel de soporte técnico</h2>
+                <p>Consulta y administra las incidencias de la empresa.</p>
+            </div>
+            <div class="date-display" id="currentDate"></div>
+        </section>
+
+        <!-- ESTADÍSTICAS -->
+        <section class="stats-grid">
+
+            <article class="stat-card">
+                <div class="stat-icon blue">▤</div>
+                <span>Total de tickets</span>
+                <h2 id="totalTickets">0</h2>
+                <small>Incidencias registradas</small>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon orange">◷</div>
+                <span>Abiertos</span>
+                <h2 id="openTickets">0</h2>
+                <small>Pendientes de atención</small>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon purple">⚙</div>
+                <span>En proceso</span>
+                <h2 id="progressTickets">0</h2>
+                <small>Actualmente atendidos</small>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon red">!</div>
+                <span>Urgentes</span>
+                <h2 id="urgentTickets">0</h2>
+                <small>Requieren atención prioritaria</small>
+            </article>
+
+        </section>
+
+        <!-- LISTADO DE TICKETS -->
+        <section class="tickets-section" id="tickets">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Tickets de soporte</h2>
+                    <p>Listado de incidencias reportadas por los usuarios.</p>
+                </div>
+
+                <span class="ticket-count" id="ticketCount">0 tickets</span>
+            </div>
+
+            <!-- FILTROS -->
+            <div class="filters">
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="Buscar ticket, usuario o equipo..."
+                >
+
+                <select id="priorityFilter">
+                    <option value="">Todas las prioridades</option>
+                    <option value="Urgente">Urgente</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Media">Media</option>
+                    <option value="Baja">Baja</option>
+                </select>
+
+                <select id="statusFilter">
+                    <option value="">Todos los estados</option>
+                    <option value="Abierto">Abierto</option>
+                    <option value="En proceso">En proceso</option>
+                    <option value="Resuelto">Resuelto</option>
+                </select>
+
+            </div>
+
+            <!-- TABLA -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>INCIDENCIA</th>
+                            <th>USUARIO</th>
+                            <th>UBICACIÓN</th>
+                            <th>PRIORIDAD</th>
+                            <th>ESTADO</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="ticketsTable">
+                    </tbody>
+                </table>
+
+                <div id="emptyState" class="empty-state hidden">
+                    No se encontraron tickets.
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ACTIVIDAD RECIENTE -->
+        <section class="activity-section" id="actividad">
+            <h2>Información del sistema</h2>
+            <div class="activity-card">
+                <div class="activity-icon">✓</div>
+                <div>
+                    <strong>Dashboard operativo</strong>
+                    <p>La interfaz está disponible para consultar incidencias.</p>
+                </div>
+            </div>
+
+            <div class="sync-info">
+                <span>Última sincronización con el servidor:</span>
+                <strong id="lastSync">Pendiente</strong>
+                <span id="pendingInfo" class="pending-info hidden"></span>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- DETALLE DEL TICKET -->
+<div id="ticketModal" class="modal hidden">
+    <div class="modal-content">
+        <button id="closeModal" class="close-btn">×</button>
+        <div id="ticketDetails"></div>
+    </div>
+</div>
+
+<!-- NUEVO TICKET -->
+<div id="newTicketModal" class="modal hidden">
+    <div class="modal-content">
+        <button id="closeNewTicket" class="close-btn" type="button">×</button>
+        <h2>Nuevo ticket</h2>
+        <p class="form-note">Si no hay conexión, se guarda en este dispositivo y se envía solo al reconectar.</p>
+        <div id="ticketForm" class="ticket-form">
+            <label>Título *<input id="fTitulo" maxlength="150" placeholder="Ej. Impresora sin tinta"></label>
+            <label>Prioridad *
+                <select id="fPrioridad">
+                    <option>Urgente</option>
+                    <option>Alta</option>
+                    <option selected>Media</option>
+                    <option>Baja</option>
+                </select>
+            </label>
+            <label>Categoría
+                <select id="fCategoria">
+                    <option>Hardware</option>
+                    <option>Software</option>
+                    <option>Redes</option>
+                    <option>Otro</option>
+                </select>
+            </label>
+            <label>Usuario que reporta<input id="fUsuario" maxlength="100"></label>
+            <label>Equipo<input id="fEquipo" maxlength="60" placeholder="Ej. PC-ADM-01"></label>
+            <label>Ubicación<input id="fUbicacion" maxlength="100"></label>
+            <label>Descripción<textarea id="fDescripcion" rows="3" maxlength="500"></textarea></label>
+            <button id="saveTicketBtn" class="refresh-btn primary-btn" type="button">Guardar ticket</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+</body>
+</html>
